@@ -20,5 +20,12 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.20",
+    "swagger-ui-express": "^4.1.4",
+    "yamljs": "^0.3.0"
   }
 }

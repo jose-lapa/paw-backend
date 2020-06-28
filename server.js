@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const YAML = require('yamljs');
 
+const dotenv = require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
@@ -18,7 +19,7 @@ mongoose.connect(ATLAS_URI, {
 		useUnifiedTopology: true,
 		useFindAndModify: false
 	})
-	.then(() => console.log('Connected to MongoDB Atlas.'))
+	.then(() => console.log('Connected to MongoDB Atlas....'))
 	.catch((err) => console.error(err));
 
 app.use(express.json());
@@ -29,4 +30,4 @@ app.use(express.urlencoded({
 app.use('/v1', AppRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(3000, () => console.log('Server now running.'));
+app.listen(3000, () => console.log('Server now running....\nAttemping connection to Mongo Atlas....'));
