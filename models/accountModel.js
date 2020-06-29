@@ -10,7 +10,7 @@ const Account = new mongoose.Schema({
         type: String,
         required: true,
     },
-    name: {
+    _name: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Name'
     },
