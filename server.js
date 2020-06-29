@@ -14,6 +14,7 @@ const app = express();
  */
 const ATLAS_URI = `mongodb+srv://JOSE:DBADMJOSE@pawcluster-tdxbw.azure.mongodb.net/COVIDRECURSO?retryWrites=true&w=majority`;
 mongoose.Promise = global.Promise;
+
 mongoose.connect(ATLAS_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -21,7 +22,7 @@ mongoose.connect(ATLAS_URI, {
 	})
 	.then(() => console.log('Connected to MongoDB Atlas....'))
 	.catch((err) => console.error(err));
-
+	
 app.use(express.json());
 app.use(express.urlencoded({
 	extended: true
