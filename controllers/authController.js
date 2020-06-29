@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const Account = require('../models/accountModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -8,15 +8,16 @@ AuthController.register = function (req, res) {
 
 	const hash = bcrypt.hashSync(req.body.password, 8);
 
-	const userInput = {
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
+	const accountInfo = {
 		email: req.body.email,
-		hash: hash,
+		password: hash,
+		firstName: req.body.firstName,
+		middleName: req.body.lastName,
+		lastName: req.body.lastName
 	}
 
-	User.create(userInput,
-			function (error, user) {
+	Account.create(accountInfo,
+			function (error, account) {
 		if (error) {
 			return res.status(500).send({
 				auth: false,
@@ -25,7 +26,7 @@ AuthController.register = function (req, res) {
 			});
 		}
 
-		if (user) {
+		if (account) {
 			const token = jwt.sign({
 					id: user._id
 				},
@@ -43,17 +44,17 @@ AuthController.register = function (req, res) {
 }
 
 AuthController.login = function (req, res) {
-	User.findOne({
+	Account.findOne({
 		email: req.body.email
-	}, function (error, user) {
+	}, function (error, account) {
 		if (error) {
 			return res.status(500).send('Server error. Retry');
 		}
 
-		if (!user) {
+		if (!account) {
 			res.status(404).send('User not found');
 		} else {
-			bcrypt.compare(req.body.password, user.hash, function (error, isMatch) {
+			bcrypt.compare(req.body.password, account.password, function (error, isMatch) {
 				if (error) {
 					return res.status(500).send('Server error. Retry');
 				}
@@ -66,7 +67,7 @@ AuthController.login = function (req, res) {
 				} else {
 
 					const token = jwt.sign({
-						id: user._id
+						id: account._id
 					}, "jfasifasp0332i", {
 						expiresIn: 30 * 60
 					});
@@ -107,50 +108,8 @@ AuthController.verifyToken = function (req, res, next) {
 			});
 		}
 
-		req.userId = decoded.id;
+		req.accountId = decoded.id;
 		next();
-	});
-}
-
-AuthController.verifyHigherPermission = function (req, res, next) {
-	User.findById(req.user.id, function (error, user) {
-		if (error) {
-			return res.status(500).send("There was a problem finding the User.");
-		}
-
-		if (!user) {
-			return res.status(404).send("No user found.");
-		}
-
-		if (user.role === 'Admin' || user.role === 'Tech') {
-			next();
-		} else {
-			return res.status(403).send({
-				auth: false,
-				message: 'Not authorized!'
-			});
-		}
-	});
-}
-
-AuthController.verifyAdmin = function (req, res, next) {
-	User.findById(req.user.id, function (error, user) {
-		if (error) {
-			return res.status(500).send("There was a problem finding the User.");
-		}
-
-		if (!user) {
-			return res.status(404).send("No user found.");
-		}
-
-		if (user.role === 'Admin') {
-			next();
-		} else {
-			return res.status(403).send({
-				auth: false,
-				message: 'Not authorized!'
-			});
-		}
 	});
 }
 
