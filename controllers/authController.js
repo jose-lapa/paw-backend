@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const Account = require('../models/accountModel');
-const Name = require('../models/nameModel');
 
 const AuthController = {};
 
@@ -13,28 +12,11 @@ AuthController.register = function ( req, res ) {
 	const accountInfo = {
 		email: req.body.email,
 		password: hash,
-	}
-
-	var nameInfo = {
 		firstName: req.body.firstName,
 		middleName: req.body.lastName,
 		lastName: req.body.lastName
 	}
-
-	Name.create( nameInfo, function ( error, name ) {
-		if ( error ) {
-			return res.status(500).send({
-				auth: false,
-				message: "There was a problem registering the User",
-				error: error
-			});
-		}
-
-		if ( name ) {
-			accountInfo._name = name;
-		}
-	});
-
+	
 	Account.create( accountInfo, function ( error, account ) {
 		if ( error ) {
 			return res.status(500).send({

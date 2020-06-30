@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const AuthRouter = require('./authRoute');
 const AccountController = require('../controllers/accountController');
 
 router.get( '/', ( req, res, next ) => AccountController.show );

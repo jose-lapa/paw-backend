@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const YAML = require('yamljs');
 
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
@@ -12,15 +12,16 @@ const app = express();
 /**
  * Mongoose connection being established
  */
-const ATLAS_URI = `mongodb+srv://JOSE:DBADMJOSE@pawcluster-tdxbw.azure.mongodb.net/COVIDRECURSO?retryWrites=true&w=majority`;
+
+const ATLAS_URI = "mongodb://localhost/COVID";
 mongoose.Promise = global.Promise;
 
 mongoose.connect(ATLAS_URI, {
 		useNewUrlParser: true,
+		useFindAndModify: false,
 		useUnifiedTopology: true,
-		useFindAndModify: false
 	})
-	.then(() => console.log('Connected to MongoDB Atlas....'))
+	.then(() => console.log('Connected to MongoDB...'))
 	.catch((err) => console.error(err));
 	
 app.use(express.json());
@@ -31,4 +32,4 @@ app.use(express.urlencoded({
 app.use('/v1', AppRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(3000, () => console.log('Server now running....\nAttemping connection to Mongo Atlas....'));
+app.listen(3000, () => console.log('Server now running...\nAttemping connection to Mongo Atlas...'));

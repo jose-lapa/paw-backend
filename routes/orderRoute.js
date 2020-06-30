@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const AuthRouter = require('./authRoute');
 const OrderController = require('../controllers/orderController');
 
 router.get( '/', ( req, res, next ) => OrderController.show );
