@@ -24,7 +24,7 @@ const Account = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 3
-    }
+    },
     _buyer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Buyer'
