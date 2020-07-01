@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Buyer = new mongoose.Schema({
-    purchases: [{
+    orders: [{
         type: Number
     }],
     complaints: [{

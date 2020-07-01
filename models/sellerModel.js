@@ -4,7 +4,7 @@ const Seller = new mongoose.Schema({
     products: [{
         type: Number
     }],
-    sales: [{
+    orders: [{
         type: Number
     }],
 });
