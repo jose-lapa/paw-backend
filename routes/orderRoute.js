@@ -8,11 +8,9 @@ router.get( '/', ( req, res, next ) => OrderController.show );
 
 router.get( '/:id', ( req, res, next ) => OrderController.getById );
 
-router.get( '/buyer/:id', ( req, res, next ) => OrderController.getByBuyer );
-
-router.get( '/seller/:id', ( req, res, next ) => OrderController.getBySeller );
-
 router.post( '/', ( req, res, next ) => OrderController.createOrder );
+
+router.put( '/:id', ( req, res, next ) => OrderController.updateById );
 
 router.delete( '/:id', ( req, res, next ) => OrderController.deleteOrder );
 
