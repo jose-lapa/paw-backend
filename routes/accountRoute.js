@@ -6,16 +6,10 @@ const AccountController = require('../controllers/accountController');
 
 router.get( '/', ( req, res, next ) => AccountController.show );
 
-router.get( '/buyer/:id', ( req, res, next ) => AccountController.getBuyerById );
+router.get( '/:id', ( req, res, next ) => AccountController.getById );
 
-router.get( '/seller/:id', ( req, res, next ) => AccountController.getSellerById );
+router.put( '/:id', ( req, res, next ) => AccountController.editById );
 
-router.put( '/buyer/:id', ( req, res, next ) => AccountController.editBuyer );
-
-router.put( '/seller/:id', ( req, res, next ) => AccountController.editSeller );
-
-router.delete( '/buyer/:id', ( req, res, next ) => AccountController.deleteBuyerById );
-
-router.delete( '/seller/:id', ( req, res, next ) => AccountController.deleteSellerById );
+router.delete( '/:id', ( req, res, next ) => AccountController.deleteById );
 
 module.exports = router;
