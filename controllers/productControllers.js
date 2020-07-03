@@ -5,6 +5,21 @@ const Product = require('../models/productModel');
 
 const ProductController = {};
 
+ProductController.show = function ( _, res ) {
+    
+    Product.find( {}, function ( error, products ) {
+        if ( error ) {
+            return res.status( 500 ).send( { message: 'Server Error.' } );
+        }
+
+        if ( !products ) {
+            return res.status( 500 ).send( { message: 'Server Error.' } );
+        } else {
+            return res.status( 200 ).send( { products: products } );
+        }
+    });
+}
+
 ProductController.create = function ( req, res ) {
     
     const randomBasedUuid = uuidv4();
