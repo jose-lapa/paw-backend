@@ -9,13 +9,13 @@ AccountController.show = function ( _, res ) {
     Account.find( {}, function ( error, accounts ) {
         
         if ( error ) {
-            res.status( 500 ).send( error );
+            return res.status( 500 ).send( error );
         }
 
         if ( accounts ) {
-            res.status( 200 ).send( accounts );
+            return res.status( 200 ).send( accounts );
         } else {
-            res.status( 404 ).send(
+            return res.status( 404 ).send(
                 {
                     message: "No accounts could be found."
                 }

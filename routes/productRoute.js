@@ -6,11 +6,13 @@ const ProductController = require('../controllers/productControllers');
 
 router.get( '/', ( req, res, next ) => ProductController.show );
 
-router.get( '/:name', ( req, res, next ) => ProductController.getByName );
+router.get( '/name/:name', ( req, res, next ) => ProductController.getByName );
 
 router.get( '/:id', ( req, res, next ) => ProductController.getById );
 
-router.post( '/', ( req, res, next ) => ProductController.createProduct );
+router.get( '/seller/:id', ( req, res, next ) => ProductController.getBySeller );
+
+router.post( '/', ( req, res, next ) => ProductController.create );
 
 router.put( '/:id', ( req, res, next ) => ProductController.updateById );
 

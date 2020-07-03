@@ -35,7 +35,7 @@ AuthController.register = function ( req, res ) {
 				}
 			);
 
-			res.status(200).send({
+			return  res.status(200).send({
 				auth: true,
 				token: token
 			})
@@ -52,7 +52,7 @@ AuthController.login = function ( req, res ) {
 		}
 
 		if ( !account ) {
-			res.status(404).send('User not found');
+			return res.status(404).send('User not found');
 		} else {
 			bcrypt.compare( req.body.password, account.password, function ( error, isMatch ) {
 				if ( error ) {
@@ -83,7 +83,7 @@ AuthController.login = function ( req, res ) {
 }
 
 AuthController.logout = function ( req, res ) {
-	res.status(200).send({
+	return res.status(200).send({
 		auth: false,
 		token: null
 	});
