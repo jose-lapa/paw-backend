@@ -9,10 +9,18 @@ const Product = new mongoose.Schema({
         type: Number,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     stock: {
         type: Number,
         required: true
     }
 });
 
-module.exports = mongoose.model('Product', );
+module.exports = mongoose.model('Product', Product);

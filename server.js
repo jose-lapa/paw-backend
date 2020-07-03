@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const YAML = require('yamljs');
+const bodyParaser = require('bod')
 
 require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
