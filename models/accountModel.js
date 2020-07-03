@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Account = new mongoose.Schema({
-    
     email: {
         type: String,
         required: true
