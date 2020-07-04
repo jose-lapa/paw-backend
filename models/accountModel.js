@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const Buyer = require('../models/buyerModel').schema;
+const Seller = require('../models/sellerModel').schema;
+
 const Account = new mongoose.Schema({
     email: {
         type: String,

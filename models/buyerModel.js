@@ -11,12 +11,10 @@ const Buyer = new mongoose.Schema({
         type: String
     },
     orders: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
+        type: Number
     }],
     complaints: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Complaint'
+        type: Number
     }],
 });
 
