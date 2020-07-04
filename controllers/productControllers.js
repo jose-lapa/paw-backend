@@ -1,12 +1,11 @@
-const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
 const Product = require('../models/productModel');
 
-const ProductController = {};
+var ProductController = {};
 
 ProductController.show = function ( _, res ) {
-    
+    console.log('Cheguei');
     Product.find( {}, function ( error, products ) {
         if ( error ) {
             return res.status( 500 ).send( { message: 'Server Error.' } );

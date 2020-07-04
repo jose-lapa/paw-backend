@@ -8,7 +8,7 @@ const OrderRouter = require('./orderRoute');
 const ComplaintRouter = require('./complaintRoute');
 
 router.get('/', (_, res) => {
-	res.sendStatus(200);
+	res.status(200).send( { message: 'Up and running.' } );
 });
 
 router.use('/auth', AuthRouter);

@@ -4,14 +4,14 @@ const router = express.Router();
 const AuthRouter = require('./authRoute');
 const AccountController = require('../controllers/accountController');
 
-router.get( '/', ( req, res, next ) => AccountController.show );
+router.get( '/', ( req, res ) => AccountController.show( req, res ) );
 
-router.get( '/:id', ( req, res, next ) => AccountController.getById );
+router.get( '/:id', ( req, res ) => AccountController.getById( req, res ) );
 
-router.post( '/', ( req, res, next ) => AccountController.save );
+router.post( '/', ( req, res ) => AccountController.save( req, res ) );
 
-router.put( '/:id', ( req, res, next ) => AccountController.editById );
+router.put( '/:id', ( req, res ) => AccountController.editById( req, res ) );
 
-router.delete( '/:id', ( req, res, next ) => AccountController.deleteById );
+router.delete( '/:id', ( req, res ) => AccountController.deleteById( req, res ) );
 
 module.exports = router;
