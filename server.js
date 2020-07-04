@@ -21,7 +21,7 @@ mongoose.connect(ATLAS_URI, {
 		useFindAndModify: false,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log('Connected to MongoDB...'))
+	.then(() => console.log('Connected to MongoDB ATLAS Cluster...'))
 	.catch((err) => console.error(err));
 	
 app.use(express.json());
@@ -32,4 +32,4 @@ app.use(express.urlencoded({
 app.use('/v1', AppRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(3000, () => console.log('Server now running...\nAttemping connection to Mongo Atlas...'));
+app.listen(3000, () => console.log('Server now running...\nAttemping connection to MongoDB ATLAS...'));

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const Buyer = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
     lastLocation: {
         type: String
     },

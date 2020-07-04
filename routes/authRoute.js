@@ -9,6 +9,6 @@ router.post('/register/buyer', (req, res) => auth.registerBuyer( req, res ) );
 
 router.post('/register/seller', (req, res) => auth.registerSeller( req, res ) );
 
-router.post('/logout', (req, res) => auth.logout)
+router.post('/logout', (req, res) => auth.logout( req, res ) );
 
 module.exports = router;

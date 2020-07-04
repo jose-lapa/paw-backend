@@ -46,7 +46,7 @@ AccountController.getById = function ( req, res ) {
     });
 }
 
-AccountController.edit = function ( req, res ) {
+AccountController.editById = function ( req, res ) {
     
     const id = req.params.id;
     const info = req.body.account;

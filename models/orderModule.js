@@ -5,22 +5,24 @@ const Order = new mongoose.Schema({
         type: Number,
         required: true
     },
-    buyer: {
+    _products: [{
         type: Number,
         required: true
-    }, 
-    seller: {
+    }],
+    _buyer: {
+        type: Number,
+        required: true
+    },
+    _seller: {
         type: Number,
         required: true
     },
     status: {
         type: String,
-        required: true,
         default: "In treatment"
     },
     note: {
         type: String,
-        required: false
     }
 });
 

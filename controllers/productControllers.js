@@ -5,7 +5,6 @@ const Product = require('../models/productModel');
 var ProductController = {};
 
 ProductController.show = function ( _, res ) {
-    console.log('Cheguei');
     Product.find( {}, function ( error, products ) {
         if ( error ) {
             return res.status( 500 ).send( { message: 'Server Error.' } );

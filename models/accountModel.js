@@ -27,13 +27,11 @@ const Account = new mongoose.Schema({
         required: true,
         minlength: 3
     },
-    _buyer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Buyer'
+    buyer: {
+        type: Number
     },
-    _seller: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Seller'
+    seller: {
+        type: Number
     }
 });
 
