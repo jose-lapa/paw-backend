@@ -7,7 +7,6 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 
 const AppRouter = require('./routes/index');
 const app = express();
-require('dotenv').config();
 
 /**
  * Mongoose connection being established
