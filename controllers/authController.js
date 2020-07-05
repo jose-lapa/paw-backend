@@ -19,9 +19,9 @@ AuthController.registerBuyer = function ( req, res ) {
 		lastName: req.body.lastName
 	}
 
-	Buyer.create( { }, function ( error, buyer ) {
+	Buyer.create( { email: req.body.email }, function ( error, buyer ) {
 		if ( error ) {
-			return res.status(500).send({
+			return res.status( 500 ).send({
 				auth: false,
 				message: "Server Error.",
 				error: error
@@ -29,7 +29,7 @@ AuthController.registerBuyer = function ( req, res ) {
 		}
 
 		if ( buyer ) {
-			accountInfo._buyer = buyer._id;
+			accountInfo.buyer = buyer._id;
 			registerAccount( accountInfo );
 		}
 	});
@@ -47,9 +47,9 @@ AuthController.registerSeller = function ( req, res ) {
 		lastName: req.body.lastName
 	}
 
-	Seller.create( { }, function ( error, seller ) {
+	Seller.create( { email: req.body.email }, function ( error, seller ) {
 		if ( error ) {
-			return res.status(500).send({
+			return res.status( 500 ).send({
 				auth: false,
 				message: "Server Error.",
 				error: error
@@ -57,7 +57,7 @@ AuthController.registerSeller = function ( req, res ) {
 		}
 
 		if ( seller ) {
-			accountInfo._seller = seller._id;
+			accountInfo.seller = seller._id;
 			registerAccount( accountInfo );
 		}
 	});
@@ -66,7 +66,7 @@ AuthController.registerSeller = function ( req, res ) {
 function registerAccount ( info ) {
 	Account.create( info, function ( error, account ) {
 		if ( error ) {
-			return res.status(500).send({
+			return res.status( 500 ).send({
 				auth: false,
 				message: "Server Error.",
 				error: error
@@ -74,23 +74,23 @@ function registerAccount ( info ) {
 		}
 
 		if ( account ) {
-			const token = jwt.sign( { id: account._id }, "jfasifasp0332i", {
+
+			const token = jwt.sign( { id: id }, process.env.TOKEN_SECRET, {
 				expiresIn: 30 * 60
 			});
+
 
 			return  res.status(200).send({
 				auth: true,
 				token: token,
-				id: account._id
+				id: account
 			});
 		}
 	});
 }
 	
 AuthController.login = function ( req, res ) {
-	Account.findOne({
-		email: req.body.email
-	}, function ( error, account ) {
+	Account.find( { email: req.body.email }, function ( error, account ) {
 		if ( error ) {
 			return res.status( 500 ).send( 'Server error.' );
 		}
@@ -111,7 +111,7 @@ AuthController.login = function ( req, res ) {
 				} else {
 					const token = jwt.sign({
 						id: account._id
-					}, "jfasifasp0332i", {
+					}, process.env.TOKEN_SECRET, {
 						expiresIn: 30 * 60
 					});
 
@@ -143,11 +143,11 @@ AuthController.verifyToken = function ( req, res, next ) {
 		});
 	}
 
-	jwt.verify( token, "jfasifasp0332i", function ( error, decoded ) {
+	jwt.verify( token, process.env.TOKEN_SECRET, function ( error, decoded ) {
 		if ( error ) {
 			return res.status( 500 ).send({
 				auth: false,
-				message: 'Failed to authenticate!'
+				message: 'Server Error.'
 			});
 		}
 

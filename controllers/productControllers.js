@@ -11,7 +11,7 @@ ProductController.show = function ( _, res ) {
         }
 
         if ( !products ) {
-            return res.status( 500 ).send( { message: 'Server Error.' } );
+            return res.status( 404 ).send( { message: 'Not found.' } );
         } else {
             return res.status( 200 ).send( { products: products } );
         }
@@ -21,6 +21,7 @@ ProductController.show = function ( _, res ) {
 ProductController.create = function ( req, res ) {
     
     const randomBasedUuid = uuidv4();
+
     const productInfo = {
         uuid: randomBasedUuid,
         seller: req.body.seller,
@@ -31,7 +32,11 @@ ProductController.create = function ( req, res ) {
 
     Product.create( productInfo, function ( error, product ) {
         if ( error ) {
-            return res.status( 500 ).send( { message: 'Server error.' } );
+            return res.status( 500 ).send( 
+                {
+                    message: 'Server error.',
+                    error: error 
+                } );
         }
 
         if ( !product ) {
@@ -49,9 +54,14 @@ ProductController.create = function ( req, res ) {
 
 ProductController.getByName = function (req, res) {
     
-    Product.find( { name: req.param.name } , function ( error, products ) {
+    Product.find( { name: req.params.name } , function ( error, products ) {
         if ( error ) {
-            return res.status( 500 ).send( { message: 'Server Error.' } );
+            return res.status( 500 ).send( 
+                {
+                    message: 'Server Error.',
+                    error: error
+                }
+            );
         }
 
         if ( !product ) {
@@ -64,9 +74,14 @@ ProductController.getByName = function (req, res) {
 
 ProductController.getById = function (req, res) {
     
-    Product.find( { uuid: req.param.id } , function ( error, products ) {
+    Product.find( { uuid: req.params.id } , function ( error, products ) {
         if ( error ) {
-            return res.status( 500 ).send( { message: 'Server Error.' } );
+            return res.status( 500 ).send( 
+                {
+                    message: 'Server Error.',
+                    error: error
+                }
+            );
         }
 
         if ( !product ) {
@@ -79,9 +94,14 @@ ProductController.getById = function (req, res) {
 
 ProductController.getBySeller = function ( req, res ) {
     
-    Product.find( { seller: req.param.id } , function ( error, products ) {
+    Product.find( { seller: req.params.id } , function ( error, products ) {
         if ( error ) {
-            return res.status( 500 ).send( { message: 'Server Error.' } );
+            return res.status( 500 ).send( 
+                {
+                    message: 'Server Error.',
+                    error: error
+                }
+            );
         }
 
         if ( !product ) {
@@ -93,13 +113,18 @@ ProductController.getBySeller = function ( req, res ) {
 } 
 
 ProductController.updateById = function ( req, res ) {
-    Product.findOneAndUpdate( { uuid: req.param.id }, req.body, { new: true }, 
+    Product.findOneAndUpdate( { uuid: req.params.id }, req.body, { new: true }, 
         function ( error, product ) {
             if ( error ) {
-                return res.status( 500 ).send( { message: 'Server Error.'} );
+                return res.status( 500 ).send( 
+                    {
+                        message: 'Server Error.',
+                        error: error
+                    }
+                );
             }
 
-            if ( !doc ) {
+            if ( !product ) {
                 return res.status( 500 ).send( { message: 'Server Error.'} );
             } else {
                 return res.status( 200 ).send( { product: product } );
@@ -108,9 +133,14 @@ ProductController.updateById = function ( req, res ) {
 }
 
 ProductController.deleteById = function ( req, res ) {
-    Product.deleteOne( { uuid: req.param.id }, function ( error ) {
+    Product.deleteOne( { uuid: req.params.id }, function ( error ) {
         if ( error ) {
-            return res.status( 500 ).send( { message: 'Server Error.'} );
+            return res.status( 500 ).send( 
+                {
+                    message: 'Server Error.',
+                    error: error
+                }
+            );
         }
     });
 }

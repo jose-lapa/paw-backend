@@ -9,11 +9,11 @@ AccountController.show = function ( _, res ) {
     Account.find( {}, function ( error, accounts ) {
         
         if ( error ) {
-            return res.status( 500 ).send( error );
+            return res.status( 500 ).send( { error: error } );
         }
 
         if ( accounts ) {
-            return res.status( 200 ).send( accounts );
+            return res.status( 200 ).send( { account: accounts } );
         } else {
             return res.status( 404 ).send(
                 {
@@ -31,11 +31,11 @@ AccountController.getById = function ( req, res ) {
     Account.findById( id, function ( error, account ) {
         
         if ( error ) {
-            res.status( 500 ).send( error );
+            res.status( 500 ).send( { error: error } );
         }
 
         if ( account ) {
-            res.status( 200 ).send( account );
+            res.status( 200 ).send( { account: account } );
         } else {
             res.status( 404 ).send(
                 {
@@ -52,18 +52,26 @@ AccountController.editById = function ( req, res ) {
     const info = req.body.account;
     
     Account.findById( id, function ( error, account ) {
-        
         if ( error ) {
-            res.status( 500 ).send( error );
+            res.status( 500 ).send( { error: error } );
         }
 
         if ( account ) {
-            //TODO: finish update process
+            account.update( info, function ( error, account ) {
+                if ( error ) {
+                    res.status( 500 ).send( { error: error } );
+                }
 
+                if ( !account ) {
+                    res.status( 500 ).send( { message: 'Server Error.' } );
+                } else {
+                    res.status( 200 ).send( { account: account } );
+                }
+            });
         } else {
             res.status( 404 ).send(
                 {
-                    message: "No action performed."
+                    message: "Account not found."
                 }
             );
         }
@@ -77,7 +85,7 @@ AccountController.deleteById = function ( req, res ) {
     Account.remove( { _id: id }, function ( error ) {
         
         if ( error ) {
-            res.status( 500 ).send( error );
+            res.status( 500 ).send( { error: error } );
         } else {
             res.status( 200 ).send( { message: 'Removed.' } );
         }

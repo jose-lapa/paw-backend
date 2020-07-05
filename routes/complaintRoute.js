@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const AuthRouter = require('./authRoute');
 const ComplaintController = require('../controllers/complaintController');
 
 router.get( '/', ( req, res ) => ComplaintController.show( req, res ) );

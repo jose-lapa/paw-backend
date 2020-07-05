@@ -5,15 +5,15 @@ const Order = new mongoose.Schema({
         type: Number,
         required: true
     },
-    _products: [{
+    products: [{
         type: Number,
         required: true
     }],
-    _buyer: {
+    buyer: {
         type: Number,
         required: true
     },
-    _seller: {
+    seller: {
         type: Number,
         required: true
     },
