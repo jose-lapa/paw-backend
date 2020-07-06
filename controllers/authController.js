@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const Account = require('../models/accountModel');
 const Buyer = require('../models/buyerModel');
 const Seller = require('../models/sellerModel');
 
@@ -19,7 +18,7 @@ AuthController.registerBuyer = function ( req, res ) {
 		lastName: req.body.lastName
 	}
 
-	Buyer.create( { email: req.body.email }, function ( error, buyer ) {
+	Buyer.create( accountInfo, function ( error, buyer ) {
 		if ( error ) {
 			return res.status( 500 ).send({
 				auth: false,
@@ -29,8 +28,17 @@ AuthController.registerBuyer = function ( req, res ) {
 		}
 
 		if ( buyer ) {
-			accountInfo.buyer = buyer._id;
-			registerAccount( accountInfo );
+
+			const token = jwt.sign( { id: id }, process.env.TOKEN_SECRET, {
+				expiresIn: 30 * 60
+			});
+
+
+			return  res.status(200).send({
+				auth: true,
+				token: token,
+				id: buyer
+			});
 		}
 	});
 }
@@ -47,7 +55,7 @@ AuthController.registerSeller = function ( req, res ) {
 		lastName: req.body.lastName
 	}
 
-	Seller.create( { email: req.body.email }, function ( error, seller ) {
+	Seller.create( accountInfo, function ( error, seller ) {
 		if ( error ) {
 			return res.status( 500 ).send({
 				auth: false,
@@ -57,23 +65,6 @@ AuthController.registerSeller = function ( req, res ) {
 		}
 
 		if ( seller ) {
-			accountInfo.seller = seller._id;
-			registerAccount( accountInfo );
-		}
-	});
-}
-
-function registerAccount ( info ) {
-	Account.create( info, function ( error, account ) {
-		if ( error ) {
-			return res.status( 500 ).send({
-				auth: false,
-				message: "Server Error.",
-				error: error
-			});
-		}
-
-		if ( account ) {
 
 			const token = jwt.sign( { id: id }, process.env.TOKEN_SECRET, {
 				expiresIn: 30 * 60
@@ -83,20 +74,56 @@ function registerAccount ( info ) {
 			return  res.status(200).send({
 				auth: true,
 				token: token,
-				id: account
+				id: seller
 			});
 		}
 	});
 }
-	
+
+/**
+ * WARNING: DUPLICATE CODE TO FIX
+ */
 AuthController.login = function ( req, res ) {
-	Account.find( { email: req.body.email }, function ( error, account ) {
+	Buyer.find( { email: req.body.email }, function ( error, buyer ) {
 		if ( error ) {
 			return res.status( 500 ).send( 'Server error.' );
 		}
 
-		if ( !account ) {
-			return res.status( 404 ).send( 'User not found.' );
+		if ( !buyer ) {
+            
+			Seller.find( { email: req.body.email }, function ( error, seller ) {
+                if ( error ) {
+                    return res.status( 500 ).send( 'Server error.' );
+                } 
+
+                if ( !seller ) {
+                    return res.status( 404 ).send( 'Not found.' );
+                } else {
+                    bcrypt.compare( req.body.password, account.password, function ( error, isMatch ) {
+                        if ( error ) {
+                            return res.status( 500 ).send( 'Server error.' );
+                        }
+        
+                        if ( !isMatch ) {
+                            return res.status( 401 ).send({
+                                auth: false,
+                                token: null
+                            });
+                        } else {
+                            const token = jwt.sign({
+                                id: seller._id
+                            }, process.env.TOKEN_SECRET, {
+                                expiresIn: 30 * 60
+                            });
+        
+                            return res.status( 200 ).send({
+                                auth: true,
+                                token: token
+                            });
+                        }
+                    });
+                }
+            });
 		} else {
 			bcrypt.compare( req.body.password, account.password, function ( error, isMatch ) {
 				if ( error ) {
@@ -110,7 +137,7 @@ AuthController.login = function ( req, res ) {
 					});
 				} else {
 					const token = jwt.sign({
-						id: account._id
+						id: buyer._id
 					}, process.env.TOKEN_SECRET, {
 						expiresIn: 30 * 60
 					});
@@ -125,7 +152,7 @@ AuthController.login = function ( req, res ) {
 	});
 }
 
-AuthController.logout = function ( req, res ) {
+AuthController.logout = function ( _, res ) {
 	return res.status( 200 ).send({
 		auth: false,
 		token: null
@@ -151,7 +178,7 @@ AuthController.verifyToken = function ( req, res, next ) {
 			});
 		}
 
-		req.accountId = decoded.id;
+		req.id = decoded.id;
 		next();
 	});
 }

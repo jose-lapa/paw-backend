@@ -133,7 +133,7 @@ ProductController.updateById = function ( req, res ) {
 }
 
 ProductController.deleteById = function ( req, res ) {
-    Product.deleteOne( { uuid: req.params.id }, function ( error ) {
+    Product.remove( { uuid: req.params.id }, function ( error ) {
         if ( error ) {
             return res.status( 500 ).send( 
                 {
@@ -141,6 +141,8 @@ ProductController.deleteById = function ( req, res ) {
                     error: error
                 }
             );
+        } else {
+            return res.status( 200 ).send( { message: 'Deleted.' } );
         }
     });
 }

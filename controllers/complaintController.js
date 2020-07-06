@@ -25,7 +25,7 @@ ComplaintController.show = function ( req, res ) {
 }
 
 ComplaintController.getById = function ( req, res ) {
-    Order.find( { uuid: req.params.id }, function ( error, complaint ) {
+    Complaint.find( { uuid: req.params.id }, function ( error, complaint ) {
         if ( error ) {
             return res.status( 500 ).send( 
                 {

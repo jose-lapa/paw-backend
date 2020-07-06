@@ -13,6 +13,9 @@ const Complaint = new mongoose.Schema({
         type: Number,
         required: true
     },
+    product: {
+        type: Number
+    },
     status: {
         type: String,
         required: true,

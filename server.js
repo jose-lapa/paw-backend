@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const YAML = require('yamljs');
@@ -15,20 +17,22 @@ const ATLAS_URI = `mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_K
 	+ `@pawcluster-tdxbw.azure.mongodb.net/${process.env.ATLAS_NAME}?retryWrites=true&w=majority`;
 mongoose.Promise = global.Promise;
 
-mongoose.connect(ATLAS_URI, {
+mongoose.connect( ATLAS_URI, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log('Connected to MongoDB ATLAS Cluster...'))
-	.catch((err) => console.error(err));
+	.then( () => console.log( 'Connected to MongoDB ATLAS Cluster...' ) )
+	.catch( ( error ) => console.error( error ));
 	
-app.use(express.json());
-app.use(express.urlencoded({
-	extended: true
-}));
+app.use( express.json() );
+app.use( express.urlencoded( 
+    {
+	    extended: true
+    })
+);
 
 app.use('/v1', AppRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup( swaggerDocument ) );
 
-app.listen(process.env.PORT, () => console.log('Server now running...\nAttemping connection to MongoDB ATLAS...'));
+app.listen( 3000, () => console.log('Server now running...\nAttemping connection to MongoDB ATLAS...') );

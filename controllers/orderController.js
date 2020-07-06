@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid');
 
-const Order = require('../models/accountModel');
+const Order = require('../models/OrderModel');
 
 const OrderController = {};
 
