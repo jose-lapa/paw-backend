@@ -1,9 +1,6 @@
-const mongoose = require('mongoose');
 const { v4: uuid } = require('uuid');
 
 const Order = require('../models/accountModel');
-const Buyer = require('../models/buyerModel');
-const Seller = require('../models/sellerModel');
 
 const OrderController = {};
 
@@ -27,7 +24,7 @@ OrderController.show = function ( _, res ) {
 }
 
 OrderController.getById = function ( req, res ) {
-    Order.findById( req.params.id, function ( error, orders) {
+    Order.find( { uuid: req.params.id }, function ( error, order ) {
         if ( error ) {
             return res.status( 500 ).send( 
                 {
@@ -37,16 +34,15 @@ OrderController.getById = function ( req, res ) {
             );
         }
 
-        if ( !orders ) {
+        if ( !order ) {
             return res.status( 404 ).send( { message: 'Not found.' });
         } else {
-            return res.status( 200 ).send( { orders: orders });
+            return res.status( 200 ).send( { order: order });
         }
-    })
+    });
 }
 
 OrderController.createOrder = function ( req, res ) {
-
     const randomBasedUuid = uuid();
     
     const OrderInfo = {
@@ -107,7 +103,7 @@ OrderController.deleteOrder = function ( req, res ) {
         } else {
             return res.status( 200 ).send( { message: 'Deleted.' } );
         }
-    })
+    });
 }
 
 module.exports = OrderController;
